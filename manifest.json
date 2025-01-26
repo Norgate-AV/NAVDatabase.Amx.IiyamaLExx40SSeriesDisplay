@@ -1,0 +1,20 @@
+{
+    "name": "NAVDatabase.Amx.IiyamaLExx40SeriesDisplay",
+    "description": "NetLinx module for Iiyama LExx40 Series Displays",
+    "version": "1.0.0",
+    "license": "MIT",
+    "files": ["src/*.axs", "src/*.tko", "lib/*.axi", "SymLink.ps1", "LICENSE", "README.md"],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Norgate-AV/NAVDatabase.Amx.IiyamaLExx40SeriesDisplay.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Norgate-AV/NAVDatabase.Amx.IiyamaLExx40SeriesDisplay/issues"
+    },
+    "dependencies": [
+        {
+            "version": "^1.25.0",
+            "url": "github.com/Norgate-AV/NAVFoundation.Amx"
+        }
+    ]
+}
