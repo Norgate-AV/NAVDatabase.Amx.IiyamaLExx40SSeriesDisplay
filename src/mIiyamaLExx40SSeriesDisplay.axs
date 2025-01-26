@@ -124,7 +124,7 @@ DEFINE_MUTUALLY_EXCLUSIVE
 (* EXAMPLE: DEFINE_CALL '<NAME>' (<PARAMETERS>) *)
 
 define_function Send(char payload[]) {
-    NAVLog("'String To ', NAVConvertDPSToAscii(dvPort), '-[', payload, ']'")
+    NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'String To ', NAVConvertDPSToAscii(dvPort), '-[', payload, ']'")
     send_string dvPort, "payload"
 }
 
@@ -202,10 +202,10 @@ define_function SetVolume(integer iParam) {
         return
     }
 
-    Send(Build(id, "$44, iParam, $00"))
-    commandBusy = true
-    wait 6 commandBusy = false
-    pollSequence = GET_VOLUME
+    Send(Build(id, "$44, iParam, iParam"))
+    // commandBusy = true
+    // wait 6 commandBusy = false
+    //pollSequence = GET_VOLUME
 }
 
 
@@ -248,35 +248,35 @@ define_function Process() {
 
         switch (get_buffer_char(buffer)) {
             case $19: {
-                // NAVLog("'iiyama Power Query Response'")
+                NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'iiyama Power Query Response'")
                 switch (buffer[1]) {
                     case $01: { actualPower = POWER_STATE_OFF }
                     case $02: { actualPower = POWER_STATE_ON }
                 }
             }
             case $45: {
-                // NAVLog("'iiyama Volume Query Response'")
+                NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'iiyama Volume Query Response'")
             }
             case $AD: {
-                // NAVLog("'iiyama Input Query Response'")
+                NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'iiyama Input Query Response'")
             }
             case $00: {
-                // NAVLog("'iiyama Command Response'")
+                NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'iiyama Command Response'")
                 // switch (buffer[1]) {
                 //     case $00: {
-                //         NAVLog('iiyama Command Ack: Completed')
+                //         NAVErrorLog(NAV_LOG_LEVEL_DEBUG, 'iiyama Command Ack: Completed')
                 //     }
                 //     case $01: {
-                //         NAVLog('iiyama Command Error: Limit Over')
+                //         NAVErrorLog(NAV_LOG_LEVEL_DEBUG, 'iiyama Command Error: Limit Over')
                 //     }
                 //     case $02: {
-                //         NAVLog('iiyama Command Error: Limit Over')
+                //         NAVErrorLog(NAV_LOG_LEVEL_DEBUG, 'iiyama Command Error: Limit Over')
                 //     }
                 //     case $03: {
-                //         NAVLog('iiyama Command Error: Cancelled')
+                //         NAVErrorLog(NAV_LOG_LEVEL_DEBUG, 'iiyama Command Error: Cancelled')
                 //     }
                 //     case $04: {
-                //         NAVLog('iiyama Command Error: Parse Error')
+                //         NAVErrorLog(NAV_LOG_LEVEL_DEBUG, 'iiyama Command Error: Parse Error')
                 //     }
                 // }
             }
@@ -300,7 +300,7 @@ define_function Drive() {
             if (commandBusy) { return }
 
             if (requiredPower && (requiredPower == actualPower)) { requiredPower = 0; return }
-            // if(requiredInput && (requiredInput == actualInput)) { requiredInput = 0; return }
+            if(requiredInput && (requiredInput == actualInput)) { requiredInput = 0; return }
             // if(iRequiredAudioMute && (iRequiredAudioMute == iActualAudioMute)) { iRequiredAudioMute = 0; return }
 
             if (requiredPower && (requiredPower != actualPower)) {
@@ -359,7 +359,7 @@ data_event[dvPort] {
 
         TimeOut()
 
-        NAVLog("'String From ', NAVConvertDPSToAscii(dvPort), '-[', data.text, ']'")
+        NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'String From ', NAVConvertDPSToAscii(dvPort), '-[', data.text, ']'")
         if (!semaphore) { Process() }
     }
 }
@@ -370,7 +370,7 @@ data_event[vdvObject] {
         stack_var char cCmdHeader[NAV_MAX_CHARS]
         stack_var char cCmdParam[3][NAV_MAX_CHARS]
 
-        NAVLog("'Command From ', NAVConvertDPSToAscii(data.device), '-[', data.text, ']'")
+        NAVErrorLog(NAV_LOG_LEVEL_DEBUG, "'Command From ', NAVConvertDPSToAscii(data.device), '-[', data.text, ']'")
 
         cCmdHeader = DuetParseCmdHeader(data.text)
         cCmdParam[1] = DuetParseCmdParam(data.text)
@@ -499,7 +499,7 @@ channel_event[vdvObject, 0] {
         //     case VOL_UP:
         //     case VOL_DN: {
         //         if(timeline_active(TL_VOLUME_RAMP)) {
-        //             timeline_kill(TL_VOLUME_RAMP)
+        //             NAVTimelineStop(TL_VOLUME_RAMP)
         //         }
         //     }
         // }
