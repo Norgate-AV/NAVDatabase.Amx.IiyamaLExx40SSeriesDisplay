@@ -1,6 +1,6 @@
 {
     "name": "navdatabase.amx.iiyamalex40sseriesdisplay",
-    "displayName": "NAVDatabase.Amx.IiyamaLExx40SeriesDisplay",
+    "displayName": "NAVDatabase.Amx.IiyamaLExx40SSeriesDisplay",
     "version": "1.0.0",
     "keywords": [
         "amx",
@@ -11,10 +11,10 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Norgate-AV/NAVDatabase.Amx.IiyamaLExx40SeriesDisplay.git"
+        "url": "https://github.com/Norgate-AV/NAVDatabase.Amx.IiyamaLExx40SSeriesDisplay.git"
     },
     "bugs": {
-        "url": "https://github.com/Norgate-AV/NAVDatabase.Amx.IiyamaLExx40SeriesDisplay/issues"
+        "url": "https://github.com/Norgate-AV/NAVDatabase.Amx.IiyamaLExx40SSeriesDisplay/issues"
     },
     "engines": {
         "node": ">=20"
